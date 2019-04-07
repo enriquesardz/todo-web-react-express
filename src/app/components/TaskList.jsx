@@ -1,10 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
 import { requestTaskCreation } from "../store/mutations";
+import { Link } from "react-router-dom";
 
 export const TaskList = ({ tasks, groupName, groupId, createNewTask }) => {
   const printTasks = () => {
-    return tasks.map(task => <p key={task.id}>{task.name}</p>);
+    return tasks.map(task => (
+      <Link to={`/task/${task.id}`} key={task.id}>
+        <p>{task.name}</p>
+      </Link>
+    ));
   };
 
   return (
