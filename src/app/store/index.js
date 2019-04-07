@@ -1,19 +1,14 @@
-import { createStore, applyMiddleware } from "redux";
-import { defaultState } from "../../server/defaultState";
+import { createStore, applyMiddleware, combineReducers } from "redux";
 import { createLogger } from "redux-logger";
 import createSagaMiddleware from "redux-saga";
-import * as sagas from "./saga.mock.js";
+import rootSaga from "./saga.mock.js";
+import * as reducers from "./reducers";
 
 const sagaMiddleware = createSagaMiddleware();
 
-export const store = createStore(function reducer(
-  state = defaultState,
-  action
-) {
-  return state;
-},
-applyMiddleware(createLogger(), sagaMiddleware));
+export const store = createStore(
+  combineReducers(reducers),
+  applyMiddleware(createLogger(), sagaMiddleware)
+);
 
-for (let saga in sagas) {
-  sagaMiddleware.run(sagas[saga]);
-}
+sagaMiddleware.run(rootSaga);

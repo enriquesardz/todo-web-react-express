@@ -5,9 +5,10 @@ export const requestTaskCreation = groupId => ({
   groupId
 });
 
-export const createTask = (taskId, groupId, ownerId) => ({
+export const createTask = (taskId, groupId, ownerId, name) => ({
   type: types.CREATE_TASK,
   taskId,
   groupId,
-  ownerId
+  ownerId,
+  name
 });

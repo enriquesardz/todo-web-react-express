@@ -8,7 +8,7 @@ export const TaskList = ({ tasks, groupName, groupId, createNewTask }) => {
   };
 
   return (
-    <div className="d-flex flex-column flex-nowrap card px-2 py-3">
+    <div className="d-flex flex-column flex-nowrap card px-2 py-3 m-3">
       <h3>{groupName}</h3>
       <div className="flex-fill">{printTasks()}</div>
       <button
@@ -24,8 +24,9 @@ export const TaskList = ({ tasks, groupName, groupId, createNewTask }) => {
 
 const mapStateToProps = (state, ownProps) => {
   const groupId = ownProps.groupId;
+  const groupName = ownProps.groupName;
   return {
-    groupName: ownProps.groupName,
+    groupName,
     groupId,
     tasks: state.tasks.filter(task => task.group === groupId)
   };
@@ -34,7 +35,6 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     createNewTask(groupId) {
-      console.log("Creating new task in " + groupId);
       dispatch(requestTaskCreation(groupId));
     }
   };
