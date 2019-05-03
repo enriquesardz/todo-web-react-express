@@ -1,20 +1,35 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import * as mutations from "../store/mutations";
 
-const TaskDetail = ({ taskId, comments, task, isComplete, groups }) => {
+const TaskDetail = ({
+  taskId,
+  comments,
+  task,
+  isComplete,
+  groups,
+  setTaskCompletion,
+  setTaskGroup,
+  setTaskName
+}) => {
   return (
     <div className="p-2">
       <div>
-        <input value={task.name} />
+        <input onChange={setTaskName} value={task.name} />
       </div>
 
       <div>
-        <button className="btn btn-primary">Complete / Reopen Task</button>
+        <button
+          className="btn btn-primary"
+          onClick={() => setTaskCompletion(taskId, !isComplete)}
+        >
+          {isComplete ? "Reopen" : "Complete"}
+        </button>
       </div>
 
       <div>
-        <select>
+        <select onChange={setTaskGroup} value={task.group}>
           {groups.map(group => (
             <option key={group.id} value={group.id}>
               {group.name}
@@ -42,4 +57,22 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export const ConnectedTaskDetail = connect(mapStateToProps)(TaskDetail);
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const taskId = ownProps.match.params.id;
+  return {
+    setTaskCompletion(taskId, isComplete) {
+      dispatch(mutations.setTaskCompletion(taskId, isComplete));
+    },
+    setTaskGroup(e) {
+      dispatch(mutations.setTaskGroup(taskId, e.target.value));
+    },
+    setTaskName(e) {
+      dispatch(mutations.setTaskName(taskId, e.target.value));
+    }
+  };
+};
+
+export const ConnectedTaskDetail = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TaskDetail);
